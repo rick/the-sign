@@ -32,28 +32,37 @@ def permute!(list)
   end
 end
 
+# which message do we choose for this specific date?
 def chosen_message(on_date, list)
   delta = (on_date - epoch).to_i
   offset = (delta + list.length) % list.length
   list[offset]
 end
 
+# when do we consider the epoch, for stable date computations
 def epoch
   START_DATE
 end
 
-def read_message_file(path)
-  File.readlines(path).map {|line| line.chomp }.reject {|line| line.empty? }
+# read a text file of messages, one per line, returning an array of messages (no newlines)
+def read_message_file(location)
+  File.readlines(location).map {|line| line.chomp }.reject {|line| line.empty? }
 end
 
+# read all message files in a directory; return sorted array of all messages
+def read_message_directory(location)
+  messages = []
+  Find.find(location) do |path|
+    next if File.directory?(path)
+    messages += read_message_file(path)
+  end
+  messages.sort
+end
+
+# read and return array of all messages at a (file or directory) location
 def retrieve_messages(location)
   if File.directory?(location)
-    messages = []
-    Find.find(location) do |path|
-      next if File.directory?(path)
-      messages += read_message_file(path)
-    end
-    messages.sort
+    read_message_directory(location)
   else
     read_message_file(location)
   end
