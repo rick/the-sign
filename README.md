@@ -1,2 +1,4 @@
-# the-sign
-I saw the sign, and it opened up my eyes; I saw the sign
+![](img/lojong.jpg)
+
+ - [`script/daily-message.rb`](script/daily-message.rb) - output a daily message from a text file, chosen randomly, stable across days
+ - [`/data/`](data/) - text files for use with `daily-message.rb`
